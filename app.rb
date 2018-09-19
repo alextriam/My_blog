@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'sinatra/reloader'
 
 configure do
   enable :sessions
@@ -17,6 +18,10 @@ before '/secure/*' do
     @error = 'Sorry, you need to be logged in to visit ' + request.path
     halt erb(:login_form)
   end
+end
+
+get '/new' do
+  erb :new
 end
 
 get '/' do
@@ -41,3 +46,5 @@ end
 get '/secure/place' do
   erb 'This is a secret place that only <%=session[:identity]%> has access to!'
 end
+
+

@@ -1,4 +1,3 @@
 source 'https://rubygems.org'
-require 'sinatra-reloader'
-
 gem 'sinatra'
+gem "sinatra-reloader"
