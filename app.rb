@@ -13,7 +13,7 @@ before do
 end
 
 configure do
-  init_db
+  init_db # before не вызывается в этом методе
   enable :sessions
   @db.execute 'CREATE TABLE IF NOT EXISTS Posts 
   (
