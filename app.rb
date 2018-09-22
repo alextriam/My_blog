@@ -40,7 +40,8 @@ before '/secure/*' do
 end
 
 get '/new' do
-  erb :new
+
+  erb :index
 end
 
 get '/' do
