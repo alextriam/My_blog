@@ -13,7 +13,14 @@ before do
 end
 
 configure do
+  init_db
   enable :sessions
+  @db.execute 'CREATE TABLE IF NOT EXISTS Posts 
+  (
+    id  INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_date  TEXT,
+    content TEXT
+  )'
 end
 
 
