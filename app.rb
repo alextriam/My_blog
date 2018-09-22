@@ -47,4 +47,8 @@ get '/secure/place' do
   erb 'This is a secret place that only <%=session[:identity]%> has access to!'
 end
 
+post '/new' do
+  content = params[:content]
+  erb "You typed #{content}"
+end
 
