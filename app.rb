@@ -85,3 +85,11 @@ post '/new' do
   erb "You typed: #{@content}"
 end
 
+#  information about post
+
+get '/details/:post_id' do
+  post_id = params[:post_id]
+
+  erb "Displaying information post id #{post_id}"
+end 
+
