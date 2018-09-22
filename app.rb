@@ -1,10 +1,22 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sqlite3'
+
+def init_db
+  @db = SQLite3::Database.new 'leprosorium.db'
+  @db.results_as_hash = true
+end
+
+before do
+
+end
 
 configure do
   enable :sessions
 end
+
+
 
 helpers do
   def username
@@ -48,7 +60,7 @@ get '/secure/place' do
 end
 
 post '/new' do
-  content = params[:content]
-  erb "You typed #{content}"
+  @content = params[:content]
+  erb "You typed: #{@content}"
 end
 
