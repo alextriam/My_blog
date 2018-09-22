@@ -41,14 +41,15 @@ end
 
 get '/new' do
 
-  # list posts from darabase
-  @results = @db.execute 'select * from Posts order by id desc'
 
-  erb :index
+  erb :new
 end
 
 get '/' do
-  erb 'Can you handle a <a href="/secure/place">secret</a>?'
+    # list posts from darabase
+  @results = @db.execute 'select * from Posts order by id desc'
+
+  erb :index 
 end
 
 get '/login/form' do
@@ -80,7 +81,7 @@ post '/new' do
 
   @db.execute 'insert into Posts (content, created_date) values (?, datetime())', [@content]
 
-
+  redirect to '/'
   erb "You typed: #{@content}"
 end
 
