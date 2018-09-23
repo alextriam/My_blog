@@ -20,9 +20,11 @@
 		<hr />
 	<% end  %>
 
+<p><%= @error %></p>
 
 <form action="/details/<%= @row['id'] %> " method="POST" role="form">
 	<textarea name="content" class="form-control" rows="5" placeholder="Type comment text"></textarea>
 	<br />
   <button type="submit" class="btn btn-primary">Add comment</button>
 </form>
+
