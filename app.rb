@@ -2,37 +2,17 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
+require 'sinatra/activerecord'
 
-def init_db
-  @db = SQLite3::Database.new './leprosorium.db'
-  @db.results_as_hash = true
+set :database, "sqlite3:leprosorium.db"
+
+class Post < ActiveRecord::Base
+  has_many :comments, dependent: :destroy
 end
 
-before do
-  init_db
+class Comment < ActiveRecord::Base
+  belongs_to :post
 end
-
-configure do
-  init_db # before не вызывается в этом методе
-  enable :sessions
-  @db.execute 'CREATE TABLE IF NOT EXISTS Posts 
-  (
-    id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    created_date  TEXT,
-    content TEXT,
-    author TEXT
-  )'
-
-    @db.execute 'CREATE TABLE IF NOT EXISTS Comments 
-  (
-    id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    created_date  TEXT,
-    content TEXT,
-    post_id integer
-  )'
-end
-
-
 
 helpers do
   def username
@@ -49,14 +29,12 @@ before '/secure/*' do
 end
 
 get '/new' do
-
-
   erb :new
 end
 
 get '/' do
     # list posts from darabase
-  @results = @db.execute 'select * from Posts order by id desc'
+  @results = Post.all # 'select * from Posts order by id desc'
 
   erb :index 
 end
@@ -81,18 +59,11 @@ get '/secure/place' do
 end
 
 post '/new' do
-  @content = params[:content]
-  @author = params[:author]
-
-  if @content.length <= 0
-    @error = "Type text"
-    return erb :new
-  end
-
-  @db.execute 'insert into Posts (content, created_date, author) values (?, datetime(), ?)', [@content, @author]
+  p = Post.new params[:post1]
+  p.save
 
   redirect to '/'
-  erb "You typed: #{@content}"
+  erb "You typed: #{p}"
 end
 
 #  information about post
@@ -100,16 +71,18 @@ end
 get '/details/:post_id' do
   post_id = params[:post_id]
 
-   results = @db.execute 'select * from Posts where id = ?', [post_id]
-   @row = results[0]
+   @results = Post.find(post_id)
+   c = Comment.new params[:content]
+   c.save
+   
 # select commets to post
-   @comments = @db.execute 'select * from Comments where post_id = ? order by id', [post_id]
+   #@comments = @db.execute 'select * from Comments where post_id = ? order by id', [post_id]
 
    erb :details
 end
 
 post '/details/:post_id' do
-  post_id = params[:post_id]
+  post_id = Post.find([:post_id])
   content = params[:content]
 
   if content.size < 1
@@ -117,18 +90,7 @@ post '/details/:post_id' do
     redirect to '/details/' + post_id
   end
 
-  @db.execute 'insert into Comments 
-    (
-      content,
-      created_date,
-      post_id
-    )
-     values 
-    (
-      ?,
-      datetime(),
-     ?
-     )', [content, post_id]
+
 
 
  redirect to '/details/' + post_id

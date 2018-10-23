@@ -3,10 +3,14 @@
 <p> 
 
 <form action="/new" method="POST" role="form">
-	<textarea name="content" class="form-control" rows="5" placeholder="Type post text here"></textarea>
+	
 	  <div class="form-group">
+	<label for="exampleInputName2">Title</label>
+    <input type="text" class="form-control" id="exampleInputName2" placeholder="Title" name="post1[title]">  	
     <label for="exampleInputName2">Name</label>
-    <input type="text" class="form-control" id="exampleInputName2" placeholder="Your name" name="author">
+    <input type="text" class="form-control" id="exampleInputName2" placeholder="Your name" name="post1[author]">
+    <label for="exampleInputName2">Post text</label>
+    <textarea name="post1[text]" class="form-control" rows="5" placeholder="Type post text here"></textarea>
   </div>
 	<br />
   <button type="submit" class="btn btn-primary">Submit</button>
