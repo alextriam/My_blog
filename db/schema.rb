@@ -14,6 +14,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_194740) do
 
   create_table "comments", force: :cascade do |t|
     t.text "text"
+    t.integer "post_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|

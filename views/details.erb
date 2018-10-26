@@ -10,13 +10,18 @@
 	<br />
 	<h4>Comments:</h4>
 
-	
+<% @comments.each do |c| %>
 
+<%= c.text %>
+<hr>
+<% end %>
 
 <p><%= @error %></p>
 
 <form action="/details/<%= @results['id'] %> " method="POST" role="form">
-	<textarea name="comment[content]" class="form-control" rows="5" placeholder="Type comment text"></textarea>
+	<textarea name="comment[text]" class="form-control" rows="5" placeholder="Type comment text"></textarea>
+	<input type="hidden" name="comment[post_id]" value="<%= @post %>" ></input>
+
 	<br />
   <button type="submit" class="btn btn-primary">Add comment</button>
 </form>
